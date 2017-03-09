@@ -11,7 +11,8 @@ func TestDiceMarshaling(t *testing.T) {
 	dice := &Dice{Sides: 12, Count: 2}
 	data, err := json.Marshal(dice)
 	require.Nil(t, err, "Dice cannot be marshaled")
-	require.Equal(t, "\"2k12\"", string(data), "Marshaled Dice have improper format")
+	require.Equal(t, "\"2k12\"", string(data),
+		"Marshaled Dice have improper format")
 }
 
 func TestDiceUnmarshaling(t *testing.T) {

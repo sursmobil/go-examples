@@ -9,7 +9,7 @@ import (
 
 // Example showing usage inf interfaces
 
-// Dice is a struct representing set of D'n'D dices like 2k12 means "tow dices
+// Dice is a struct representing set of D'n'D dices like 2k12 means "two dices
 // with twelve sides each". Dice is an example of 'jsonification' so it should
 // implement json.Marshaler and json.Unmarshaler interfaces
 type Dice struct {
@@ -19,6 +19,10 @@ type Dice struct {
 
 var _ json.Marshaler = Dice{}
 var _ json.Unmarshaler = &Dice{}
+
+func invalidFormat(reason string, a ...interface{}) error {
+	return fmt.Errorf("Invalid Dice format: "+reason, a)
+}
 
 // MarshalJSON implements json.Marshaler for Dice struct
 func (d Dice) MarshalJSON() ([]byte, error) {
@@ -36,19 +40,19 @@ func (d *Dice) UnmarshalJSON(in []byte) error {
 
 	parts := strings.Split(s, "k")
 	if len(parts) != 2 {
-		return fmt.Errorf("Invalid Dice format: should be '<count>k<sides>' but is %s", s)
+		return invalidFormat("should be '<count>k<sides>' but is %s", s)
 	}
 
 	sCount, sSides := parts[0], parts[1]
 
 	count, err := strconv.Atoi(sCount)
 	if err != nil {
-		return fmt.Errorf("Invalid Dice format: count should be int but is '%s'", sCount)
+		return invalidFormat("count should be int but is '%s'", sCount)
 	}
 
 	sides, err := strconv.Atoi(sSides)
 	if err != nil {
-		return fmt.Errorf("Invalid Dice format: sides should be int but is '%s'", sSides)
+		return invalidFormat("sides should be int but is '%s'", sSides)
 	}
 
 	d.Sides = sides
