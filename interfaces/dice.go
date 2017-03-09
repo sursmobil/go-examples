@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// Example showing usage inf interfaces
+// Example showing usage interfaces
 
 // Dice is a struct representing set of D'n'D dices like 2k12 means "two dices
 // with twelve sides each". Dice is an example of 'jsonification' so it should
